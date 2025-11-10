@@ -1,15 +1,12 @@
 import css from "./Home.module.css";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  // Назва сторінки
   title: "404 | Сторінку не знайдено",
-
-  // Короткий опис сторінки
   description:
     "На жаль, сторінка, яку ви шукаєте, не існує. Будь ласка, перевірте URL або поверніться на головну сторінку NoteHub.",
-
-  // URL сторінки помилки
-  url: "https://notehub.com/404",
+  alternates: {
+    canonical: "http://localhost:3001/notes/filter/all",
+  },
 
   // Open Graph мета-теги
   openGraph: {
