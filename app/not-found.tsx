@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: "http://localhost:3001/notes/filter/all",
   },
 
-  // Open Graph мета-теги
+
   openGraph: {
     title: "404 | Сторінку не знайдено (NoteHub)",
     description:
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "NoteHub",
     images: [
       {
-        // Використовуємо загальну картинку Open Graph
+        
         url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
         width: 1200,
         height: 630,
