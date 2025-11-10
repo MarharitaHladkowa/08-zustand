@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import css from "./Home.module.css";
+export const metadata: Metadata = {
+  title: "NoteHub - Simple and Efficient Note Management",
+  description:
+    "NoteHub is a simple and efficient application designed for managing personal notes. Оно помогает упорядочить ваши мысли и повысить продуктивность.",
+};
 export default function Home() {
   return (
     <main>

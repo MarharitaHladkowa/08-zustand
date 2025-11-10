@@ -8,9 +8,50 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { Tag } from "@/types/note";
-
+import type { Metadata } from "next";
 interface FilterPageProps {
   params: Promise<{ slug: string[] }>;
+}
+
+export async function generateMetadata({
+  params,
+}: FilterPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const tag: Tag | undefined =
+    slug[0] === ALL_NOTES || !slug[0] ? undefined : (slug[0] as Tag);
+  const pageTitle = tag ? `${tag} Notes` : "All Notes";
+
+  const pageDescription = tag
+    ? `Browse all notes tagged with ${tag} on NoteHub.`
+    : "Discover and browse all available notes on NoteHub.";
+  const slugPath = slug?.join("/") || ALL_NOTES;
+  const pageUrl = `https://notehub.com/notes/${slugPath}`;
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+
+    alternates: {
+      canonical: pageUrl,
+    },
+
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: pageUrl,
+      siteName: "NoteHub",
+      images: [
+        {
+          // URL изображения для Open Graph
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Обложка для сторінки ${pageTitle}`,
+        },
+      ],
+      type: "website", // Используем 'website' для страницы-списка/фильтра
+    },
+  };
 }
 
 const NotesPage = async ({ params }: FilterPageProps) => {

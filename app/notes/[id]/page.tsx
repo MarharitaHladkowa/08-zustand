@@ -5,10 +5,36 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
+import type { Metadata } from "next";
+
 interface NotesPageProps {
   params: Promise<{ id: string }>;
 }
-
+export async function generateMetadata({
+  params,
+}: NotesPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const note = await fetchNoteById(id);
+  return {
+    title: `Note: ${note.title}`,
+    description: note.content.slice(0, 30),
+    openGraph: {
+      title: `Note: ${note.title}`,
+      description: note.content.slice(0, 100),
+      url: `http://localhost:3000/`,
+      siteName: "NoteHub",
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: note.title,
+        },
+      ],
+      type: "article",
+    },
+  };
+}
 const NotesPage = async ({ params }: NotesPageProps) => {
   const { id } = await params;
   const queryClient = new QueryClient();
