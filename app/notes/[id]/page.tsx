@@ -22,7 +22,6 @@ export async function generateMetadata({
       title: note.title,
       description: note.content.slice(0, 100),
       url: `http://localhost:3000/`,
-      siteName: "NoteHub",
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/og-meta.jpg",
