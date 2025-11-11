@@ -14,6 +14,7 @@ import type { Note } from "@/types/note";
 import Pagination from "@/components/Pagination/Pagination";
 import css from "./NotesPage.module.css";
 import type { Tag } from "@/types/note";
+import { useRouter } from "next/navigation";
 interface NotesClientProps {
   tag?: Tag;
 }
@@ -22,7 +23,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const [page, setPage] = useState<number>(1);
 
   const { data, isLoading, isError, error, isSuccess } = useQuery({
@@ -52,11 +52,10 @@ export default function NotesClient({ tag }: NotesClientProps) {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
+  const router = useRouter();
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        {/* ИСПРАВЛЕНИЕ: Передаем функцию-обертку handleSearchEvent */}
         <SearchBox value={query} onSearch={handleChange} />
 
         {totalPages > 1 && (
@@ -67,9 +66,8 @@ export default function NotesClient({ tag }: NotesClientProps) {
           />
         )}
         <button
-          onClick={openModal}
+          onClick={() => router.push("/notes/action/create")}
           className={css.button}
-          aria-label="create note"
         >
           + create note
         </button>
