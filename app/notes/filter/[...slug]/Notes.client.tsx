@@ -6,15 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import NoteForm from "@/components/NoteForm/NoteForm";
+import Link from "next/link";
 import Loader from "@/components/Loader/Loader";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
-import Modal from "@/components/Modal/Modal";
+
 import type { Note } from "@/types/note";
 import Pagination from "@/components/Pagination/Pagination";
 import css from "./NotesPage.module.css";
 import type { Tag } from "@/types/note";
-import { useRouter } from "next/navigation";
+
 interface NotesClientProps {
   tag?: Tag;
 }
@@ -48,10 +48,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const router = useRouter();
-  const handleCreateNote = () => {
-    router.push("/notes/action/create");
-  };
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -64,9 +61,9 @@ export default function NotesClient({ tag }: NotesClientProps) {
             onPageChange={handlePageClick}
           />
         )}
-        <button onClick={handleCreateNote} className={css.button}>
+        <Link href="/create" className={css.button}>
           + create note
-        </button>
+        </Link>
       </header>
       <NoteList notes={notes} />
       <div>
