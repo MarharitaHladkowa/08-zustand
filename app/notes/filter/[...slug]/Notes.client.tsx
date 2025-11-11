@@ -53,6 +53,9 @@ export default function NotesClient({ tag }: NotesClientProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const router = useRouter();
+  const handleCreateNote = () => {
+    router.push("/notes/action/create");
+  };
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -65,10 +68,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
             onPageChange={handlePageClick}
           />
         )}
-        <button
-          onClick={() => router.push("/notes/action/create")}
-          className={css.button}
-        >
+        <button onClick={handleCreateNote} className={css.button}>
           + create note
         </button>
       </header>
