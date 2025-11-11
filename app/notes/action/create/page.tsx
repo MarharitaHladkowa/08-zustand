@@ -1,8 +1,5 @@
-
 import NoteForm from "@/components/NoteForm/NoteForm";
-import css from 
 const CreateNotePage = () => {
-    
   return (
     <main className={css.main}>
       <div className={css.container}>
