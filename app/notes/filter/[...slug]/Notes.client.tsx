@@ -20,9 +20,6 @@ interface NotesClientProps {
 }
 export default function NotesClient({ tag }: NotesClientProps) {
   const [query, setQuery] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
   const [page, setPage] = useState<number>(1);
 
   const { data, isLoading, isError, error, isSuccess } = useQuery({
@@ -32,7 +29,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
     refetchOnMount: false,
   });
 
-  // 1. Debounced функция: сохранено имя handleChange, ожидает ТОЛЬКО строку
   const handleChange = useDebouncedCallback((value: string) => {
     setQuery(value);
     setPage(1);
@@ -97,11 +93,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
             )}
           </>
         )}
-
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <NoteForm onClose={closeModal} />
-        </Modal>
-
         <Toaster position="top-right" />
       </div>
     </div>
