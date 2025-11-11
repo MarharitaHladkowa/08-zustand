@@ -7,7 +7,7 @@ import type { FormikHelpers } from "formik";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "@/lib/api";
 import type { NewNote } from "../../types/note";
-
+import { useRouter } from "next/navigation";
 interface OrderFormValues {
   title: string;
   content?: string;
@@ -32,20 +32,19 @@ const OrderSchema = Yup.object().shape({
     .required("Тег є обов’язковим"),
 });
 
-interface NoteFormProps {
-  onClose: () => void;
-}
-
-export default function NoteForm({ onClose }: NoteFormProps) {
+export default function NoteForm() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const fieldId = useId();
+  const handleCancel = () => router.push("/notes/filter/all");
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (newNote: NewNote) => {
       return createNote(newNote);
     },
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      onClose();
+      router.push("/notes/filter/all");
     },
   });
   const handleSubmit = async (
@@ -74,30 +73,25 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       {({ isSubmitting, isValid, dirty }) => {
         return (
           <Form className={css.form}>
-                       {" "}
             <div className={css.formGroup}>
-                           {" "}
-              <ErrorMessage name="title" component="p" className={css.error} /> 
-                          <label htmlFor={`${fieldId}-title`}>Title</label>     
-                     {" "}
+              <ErrorMessage name="title" component="p" className={css.error} />
+              <label htmlFor={`${fieldId}-title`}>Title</label>
+
               <Field
                 id={`${fieldId}-title`}
                 type="text"
                 name="title"
                 className={css.input}
               />
-                         {" "}
             </div>
-                       {" "}
             <div className={css.formGroup}>
-                           {" "}
               <ErrorMessage
                 name="content"
                 component="p"
                 className={css.error}
               />
-                           {" "}
-              <label htmlFor={`${fieldId}-content`}>Content</label>             {" "}
+
+              <label htmlFor={`${fieldId}-content`}>Content</label>
               <Field
                 as="textarea"
                 id={`${fieldId}-content`}
@@ -105,50 +99,39 @@ export default function NoteForm({ onClose }: NoteFormProps) {
                 rows={8}
                 className={css.textarea}
               />
-                         {" "}
             </div>
-                       {" "}
             <div className={css.formGroup}>
-                            <label htmlFor={`${fieldId}-tag`}>Tag</label>       
-                   {" "}
+              <label htmlFor={`${fieldId}-tag`}>Tag</label>
               <ErrorMessage name="tag" component="p" className={css.error} />   
-                       {" "}
               <Field
                 as="select"
                 id={`${fieldId}-tag`}
                 name="tag"
                 className={css.select}
               >
-                                <option value="Todo">Todo</option>             
-                  <option value="Work">Work</option>               {" "}
-                <option value="Personal">Personal</option>               {" "}
-                <option value="Meeting">Meeting</option>               {" "}
-                <option value="Shopping">Shopping</option>             {" "}
+                <option value="Todo">Todo</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Meeting">Meeting</option>
+                <option value="Shopping">Shopping</option>
               </Field>
-                         {" "}
             </div>
-                       {" "}
             <div className={css.actions}>
-                           {" "}
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleCancel}
                 className={css.cancelButton}
               >
-                                Cancel              {" "}
+                Cancel
               </button>
-                           {" "}
               <button
                 type="submit"
                 className={css.submitButton}
                 disabled={isSubmitting || !isValid || !dirty || isPending}
               >
-                                {isSubmitting ? "Creating..." : "Create"}       
-                     {" "}
+                {isSubmitting ? "Creating..." : "Create"}
               </button>
-                         {" "}
             </div>
-                     {" "}
           </Form>
         );
       }}

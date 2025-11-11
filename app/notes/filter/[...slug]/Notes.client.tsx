@@ -61,7 +61,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
             onPageChange={handlePageClick}
           />
         )}
-        <Link href="/create" className={css.button}>
+        <Link href="/notes/action/create" className={css.button}>
           + create note
         </Link>
       </header>
