@@ -8,6 +8,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "@/lib/api";
 import type { NewNote } from "../../types/note";
 import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
+import { create } from "zustand";
+export const metadata: Metadata = {
+  title: "Create New Note | NoteHub",
+  description: "Create a new note or task quickly and organize your ideas.",
+
+  openGraph: {
+    title: "NoteHub — Your Ideal Space for Notes",
+    description: "Create, edit, and share your ideas quickly and easily.",
+
+    url: "/notes/action/create",
+    siteName: "NoteHub",
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NoteHub Social Media Cover",
+      },
+    ],
+    type: "website",
+  },
+};
 interface OrderFormValues {
   title: string;
   content?: string;
