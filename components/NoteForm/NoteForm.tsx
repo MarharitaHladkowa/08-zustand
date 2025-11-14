@@ -28,20 +28,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-interface OrderFormValues {
-  title: string;
-  content?: string;
-  tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
-}
-const initialValues: OrderFormValues = {
-  title: "",
-  content: "",
-  tag: "Todo",
-};
 
 export default function NoteForm() {
   const router = useRouter();
-  const { draft, setDraft } = useNoteDraftStore();
+  const { draft, setDraft, clearDraft } = useNoteDraftStore();
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -54,15 +44,14 @@ export default function NoteForm() {
   };
 
   const { mutate } = useMutation({
-    mutationFn: async (newNote: NewNote) => {
-      return createNote(newNote);
-    },
+    mutationFn: createNote,
     onSuccess() {
       router.push("/notes/filter/all");
+      clearDraft();
     },
   });
   const handleSubmit = (formData: FormData) => {
-    const values = Object.fromEntries(formData) as NewNote;
+    const values = Object.fromEntries(formData) as unknown as NewNote;
     mutate(values);
   };
   const handleCancel = () => router.push("/notes/filter/all");
@@ -88,19 +77,22 @@ export default function NoteForm() {
         ></textarea>
       </label>
 
-      <label className={css.label}>
+      <label htmlFor="tag" className={css.label}>
         Tag
         <select
+          id="tag"
           name="tag"
           defaultValue={draft?.tag}
           onChange={handleChange}
           className={css.select}
         >
-          {TAG_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
+          <option value="Todo">Todo</option>
+
+          <option value="Work">Work</option>
+
+          <option value="Personal">Personal</option>
+          <option value="Meeting">Meeting</option>
+          <option value="Shopping">Shopping</option>
         </select>
       </label>
 
