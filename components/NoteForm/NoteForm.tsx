@@ -1,7 +1,7 @@
 "use client";
 
 import css from "./NoteForm.module.css";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "@/lib/api";
 import type { NewNote } from "../../types/note";
 import { useRouter } from "next/navigation";
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 
 export default function NoteForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
   const handleChange = (
     event: React.ChangeEvent<
@@ -46,6 +47,7 @@ export default function NoteForm() {
   const { mutate } = useMutation({
     mutationFn: createNote,
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       router.push("/notes/filter/all");
       clearDraft();
     },
@@ -64,7 +66,7 @@ export default function NoteForm() {
           name="title"
           defaultValue={draft?.title}
           onChange={handleChange}
-          className="css.text"
+          className={css.text}
         />
       </label>
       <label className={css.label}>
@@ -73,7 +75,7 @@ export default function NoteForm() {
           name="content"
           defaultValue={draft?.content}
           onChange={handleChange}
-          className=" css.textarea"
+          className={css.textarea}
         ></textarea>
       </label>
 

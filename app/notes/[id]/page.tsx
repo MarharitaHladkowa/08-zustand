@@ -22,7 +22,7 @@ export async function generateMetadata({
     openGraph: {
       title: note.title,
       description: note.content.slice(0, 100),
-      url: `http://localhost:3000/`,
+      url: `http://localhost:3000/notes/${id}`,
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/og-meta.jpg",

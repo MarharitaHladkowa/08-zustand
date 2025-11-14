@@ -1,5 +1,14 @@
 import NoteForm from "@/components/NoteForm/NoteForm";
 import css from "../../../Home.module.css";
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Create Note",
+  description: "Create a new note",
+  openGraph: {
+    title: "Create Note",
+    description: "Create a new note",
+  },
+};
 const CreateNotePage = () => {
   return (
     <main className={css.main}>
